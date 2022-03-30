@@ -55,9 +55,9 @@ class PersonaDAOPool:
 
 
 if __name__ == '__main__':
-    # persona1 = Persona(nombre='Pepito', apellido='Grillo', email='p@mail.com')
-    # personas_insertadas = PersonaDAOPool.insertar(persona1)
-    # log.debug(f'Personas insertadas: {personas_insertadas}')
+    persona1 = Persona(nombre='Pepito', apellido='Grillo', email='p@mail.com')
+    personas_insertadas = PersonaDAOPool.insertar(persona1)
+    log.debug(f'Personas insertadas: {personas_insertadas}')
 
     # persona1 = Persona(1, 'Pepito', 'Grillo', 'p@mail.com')
     # registros_actualizados = PersonaDAOPool.actualizar(persona1)
