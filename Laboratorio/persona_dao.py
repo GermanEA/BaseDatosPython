@@ -1,11 +1,13 @@
+from conexion import Conexion
 from cursor_del_pool import CursorDelPool
 from persona import Persona
 from logger_base import log
 
 
-class PersonaDAOPool:
+class PersonaDAO:
     """
     DAO (Data Access Object)
+    CRUD (Create-Read-Update-Delete)
     """
     _SELECCIONAR = 'SELECT * FROM persona ORDER BY id_persona'
     _INSERTAR = 'INSERT INTO persona(nombre, apellido, email) VALUES(%s, %s, %s)'
@@ -18,11 +20,9 @@ class PersonaDAOPool:
             cursor.execute(cls._SELECCIONAR)
             registros = cursor.fetchall()
             personas = []
-
             for registro in registros:
                 persona = Persona(registro[0], registro[1], registro[2], registro[3])
                 personas.append(persona)
-
             return personas
 
     @classmethod
@@ -31,7 +31,6 @@ class PersonaDAOPool:
             valores = (persona.nombre, persona.apellido, persona.email)
             cursor.execute(cls._INSERTAR, valores)
             log.debug(f'Persona insertada: {persona}')
-
             return cursor.rowcount
 
     @classmethod
@@ -40,7 +39,6 @@ class PersonaDAOPool:
             valores = (persona.nombre, persona.apellido, persona.email, persona.id_persona)
             cursor.execute(cls._ACTUALIZAR, valores)
             log.debug(f'Persona actualizada: {persona}')
-
             return cursor.rowcount
 
     @classmethod
@@ -49,23 +47,26 @@ class PersonaDAOPool:
             valores = (persona.id_persona,)
             cursor.execute(cls._ELIMINAR, valores)
             log.debug(f'Objeto eliminado: {persona}')
-
             return cursor.rowcount
 
 
 if __name__ == '__main__':
-    persona1 = Persona(nombre='Pepito', apellido='Grillo', email='p@mail.com')
-    personas_insertadas = PersonaDAOPool.insertar(persona1)
+    # Insertar un registro
+    persona1 = Persona(nombre='Alejandra', apellido='Tellez', email='atellez@mail.com')
+    personas_insertadas = PersonaDAO.insertar(persona1)
     log.debug(f'Personas insertadas: {personas_insertadas}')
 
-    # persona1 = Persona(1, 'Pepito', 'Grillo', 'p@mail.com')
-    # registros_actualizados = PersonaDAOPool.actualizar(persona1)
-    # log.debug(f'Personas actualizadas: {registros_actualizados}')
+    # Actualizar un registro
+    persona1 = Persona(1, 'Juan', 'Perez', 'jperez@mail.com')
+    personas_actualizadas = PersonaDAO.actualizar(persona1)
+    log.debug(f'Personas actualizadas: {personas_actualizadas}')
 
-    # persona1 = Persona(id_persona=7)
-    # personas_eliminadas = PersonaDAOPool.eliminar(persona1)
-    # log.debug(f'Personas eliminadas: {personas_eliminadas}')
+    # Eliminar un registro
+    persona1 = Persona(id_persona=15)
+    personas_eliminadas = PersonaDAO.eliminar(persona1)
+    log.debug(f'Personas eliminadas: {personas_eliminadas}')
 
-    personas_lista = PersonaDAOPool.seleccionar()
-    for persona_lista in personas_lista:
-        log.debug(persona_lista)
+    # Seleccionar objetos
+    personas_t = PersonaDAO.seleccionar()
+    for persona_t in personas_t:
+        log.debug(persona_t)
